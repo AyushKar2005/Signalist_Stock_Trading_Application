@@ -19,7 +19,7 @@ if(!cached){
 export const connectToDatabase = async()=>{
     if(!MONGODB_URI) throw new Error("MongoDB URI doesn't exist");
 
-    if(!cached.conn) return cached.conn
+    if(cached.conn) return cached.conn
 
     if(!cached.promise) {
 
@@ -35,4 +35,6 @@ export const connectToDatabase = async()=>{
     }
 
     console.log(`connected to database ${process.env.NODE_ENV}-${MONGODB_URI}`);
+
+    return cached.conn;
 }

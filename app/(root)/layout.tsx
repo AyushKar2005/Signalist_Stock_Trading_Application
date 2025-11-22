@@ -8,14 +8,14 @@ export default async function Layout({
                                      }: {
     children: React.ReactNode;
 }) {
-    // headers() is synchronous
-    const h = headers();
+    // await headers() so Next.js gives you a stable value to iterate
+    const h = await headers();
 
-    // Many auth libs want plain key/value headers; if yours does, uncomment:
-    // const hObj = Object.fromEntries(h.entries());
+    // If your auth lib expects a plain key/value object, make one:
+    const hObj = Object.fromEntries(h.entries());
 
     const session = await auth.api.getSession({
-        headers: h, // or hObj if your auth expects a plain object
+        headers: hObj, // use hObj if auth expects a plain object; otherwise pass h
     });
 
     if (!session?.user) {
@@ -35,3 +35,5 @@ export default async function Layout({
         </main>
     );
 }
+
+
